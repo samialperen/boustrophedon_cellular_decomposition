@@ -87,7 +87,7 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     current_cell = 1
     current_cells = []
     separate_img = np.copy(erode_img)
-
+    cells_boundaries = {}
 
     for col in range(erode_img.shape[1]):
         current_slice = erode_img[:, col]
@@ -128,12 +128,27 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
 
         # Draw the partition information on the map.
         for cell, slice in zip(current_cells, connective_parts):
-            # print(current_cells, connective_parts)
+            #print("Debug")
+            #print(current_cells, connective_parts)
             separate_img[slice[0]:slice[1], col] = cell
-
+        
             # print('Slice {}: connectivity from {} to {}'.format(col, last_connectivity, connectivity))
         last_connectivity = connectivity
         last_connectivity_parts = connective_parts
+
+        #print("Debug")
+        #print(current_cells,connective_parts)
+        
+        #print("Current cell: ", current_cell)
+        if len(current_cells) == 1: #no object in this cell
+            cell_index = current_cell -1  # cell index starts from 1
+            cells_boundaries.setdefault(cell_index,[])
+            cells_boundaries[cell_index].append(connective_parts)
+    
+    print("Keys: ",cells_boundaries.keys())
+    key1 = list(cells_boundaries.keys())[1]
+    print("Key: ", key1)
+    print("Key value: ", cells_boundaries.get(key1))
 
     return separate_img, current_cell
 
@@ -150,7 +165,8 @@ def display_separate_map(separate_map, cells):
 if __name__ == '__main__':
     
     # Read the original data
-    original_map = cv2.imread("../data/example2.png")
+    #original_map = cv2.imread("../data/example2.png")
+    original_map = cv2.imread("../data/example2.png")[:,0:350]
 
     # Show the original data
     fig1 = plt.figure()
