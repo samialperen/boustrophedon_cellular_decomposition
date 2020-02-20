@@ -144,11 +144,44 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
             cell_index = current_cell -1  # cell index starts from 1
             cells_boundaries.setdefault(cell_index,[])
             cells_boundaries[cell_index].append(connective_parts)
-    
-    print("Keys: ",cells_boundaries.keys())
-    key1 = list(cells_boundaries.keys())[1]
-    print("Key: ", key1)
-    print("Key value: ", cells_boundaries.get(key1))
+        elif len(current_cells) > 1: #cells separated by the object
+            for i in range(len(current_cells)):
+                # current cells list doesn't need cell -1 operation 
+                # it is already in the proper form
+                cell_index = current_cells[i]
+                # connective_parts and current_cells contain more than one
+                # cell info which are separated by the object ,so we are iterating
+                # with the for loop to reach all the cells
+                cells_boundaries.setdefault(cell_index,[])
+                cells_boundaries[cell_index].append(connective_parts[i])
+                
+
+
+    # Debug
+    #print("Keys: ",cells_boundaries.keys())
+    #key1 = list(cells_boundaries.keys())[0]
+    #print("Key1: ", key1)
+    #print("Key2 value: ", cells_boundaries.get(key1))
+    #
+    #key2 = list(cells_boundaries.keys())[1]
+    #print("Key2: ", key2)
+    #print("Key2 value: ", cells_boundaries.get(key2))
+    #
+    #key3 = list(cells_boundaries.keys())[2]
+    #print("Key3: ", key3)
+    #print("Key3 value: ", cells_boundaries.get(key3))
+    #
+    #key4 = list(cells_boundaries.keys())[3]
+    #print("Key4: ", key4)
+    #print("Key4 value: ", cells_boundaries.get(key4))
+    #
+    #key5 = list(cells_boundaries.keys())[4]
+    #print("Key5: ", key5)
+    #print("Key5 value: ", cells_boundaries.get(key5))
+    #
+    #key6 = list(cells_boundaries.keys())[5]
+    #print("Key6: ", key6)
+    #print("Key6 value: ", cells_boundaries.get(key6))
 
     return separate_img, current_cell
 
