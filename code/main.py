@@ -70,6 +70,15 @@ def get_adjacency_matrix(parts_left: Slice, parts_right: Slice) -> np.ndarray:
 
     return adjacency_matrix
 
+def remove_duplicates(in_list):
+    out_list = []
+    added = set()
+    for val in in_list:
+        if not val in added:
+            out_list.append(val)
+            added.add(val)
+    return out_list
+
 
 def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     """
@@ -88,6 +97,7 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     current_cells = []
     separate_img = np.copy(erode_img)
     cells_boundaries = {}
+    non_neighboor_cells = []
 
     for col in range(erode_img.shape[1]):
         current_slice = erode_img[:, col]
@@ -145,6 +155,15 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
             cells_boundaries.setdefault(cell_index,[])
             cells_boundaries[cell_index].append(connective_parts)
         elif len(current_cells) > 1: #cells separated by the object
+            # cells separated by the objects are not neighbor to each other
+            non_neighboor_cells.append(current_cells)
+            # non_neighboor_cells will contain many duplicate values, but we 
+            # will get rid of duplicates at the end
+
+            # in this logic, all other cells must be neighboor to each other
+            # if their cell number are adjacent to each other
+            # like cell1 is neighboor to cell2
+
             for i in range(len(current_cells)):
                 # current cells list doesn't need cell -1 operation 
                 # it is already in the proper form
@@ -154,8 +173,18 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
                 # with the for loop to reach all the cells
                 cells_boundaries.setdefault(cell_index,[])
                 cells_boundaries[cell_index].append(connective_parts[i])
-                
+    
+    # Create adjacency (neighborhood matrix) for the cells based on
+    # cell number
+    # Cell 1 is the left most cell and cell n is the right most cell
+    # where n is the total cell number
+    n = len(cells_boundaries.keys())
+    all_cell_numbers = cells_boundaries.keys()
 
+    non_neighboor_cells = remove_duplicates(non_neighboor_cells)
+   
+    #non_neighboor_cells = list(dict.fromkeys(non_neighboor_cells))
+    print(non_neighboor_cells)
 
     # Debug
     #print("Keys: ",cells_boundaries.keys())
@@ -182,6 +211,10 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     #key6 = list(cells_boundaries.keys())[5]
     #print("Key6: ", key6)
     #print("Key6 value: ", cells_boundaries.get(key6))
+    #
+    #key7 = list(cells_boundaries.keys())[6]
+    #print("Key7: ", key7)
+    #print("Key7 value: ", cells_boundaries.get(key7))
 
     return separate_img, current_cell
 
