@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 import matplotlib
 from typing import Tuple, List
 import random
+import itertools
 
 
 Slice = List[Tuple[int, int]]
@@ -71,14 +72,20 @@ def get_adjacency_matrix(parts_left: Slice, parts_right: Slice) -> np.ndarray:
     return adjacency_matrix
 
 def remove_duplicates(in_list):
+    """
+        This function removes duplicates in the input list, where
+        input list is composed of unhashable elements
+        Example:
+            in_list = [[1,2],[1,2],[2,3]]
+            output = remove_duplicates(in_list)
+            output --> [[1,2].[2,3]]
+    """
     out_list = []
-    added = set()
-    for val in in_list:
-        if not val in added:
-            out_list.append(val)
-            added.add(val)
+    in_list.sort()
+    out_list = list(in_list for in_list,_ in itertools.groupby(in_list))
+    #print("input_list: ", in_list)
+    #print("output list: ",out_list)
     return out_list
-
 
 def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     """
@@ -89,14 +96,21 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
 
     Returns:
         [H, W], separated map. The pixel value 0 represents obstacles and others for its' cell number.
+        current_cell and seperate_img is for display purposes --> which is used to show
+        decomposed cells into a separate figure
+        all_cell_numbers --> contains all cell index numbers
+        cell_boundaries --> contains all cell boundary coordinates (only y coordinate)
+        non_neighboor_cells --> contains cell index numbers of non_neighboor_cells, i.e.
+        cells which are separated by the objects
     """
+    
     assert len(erode_img.shape) == 2, 'Map should be single channel.'
     last_connectivity = 0
     last_connectivity_parts = []
     current_cell = 1
     current_cells = []
     separate_img = np.copy(erode_img)
-    cells_boundaries = {}
+    cell_boundaries = {}
     non_neighboor_cells = []
 
     for col in range(erode_img.shape[1]):
@@ -152,8 +166,8 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
         #print("Current cell: ", current_cell)
         if len(current_cells) == 1: #no object in this cell
             cell_index = current_cell -1  # cell index starts from 1
-            cells_boundaries.setdefault(cell_index,[])
-            cells_boundaries[cell_index].append(connective_parts)
+            cell_boundaries.setdefault(cell_index,[])
+            cell_boundaries[cell_index].append(connective_parts)
         elif len(current_cells) > 1: #cells separated by the object
             # cells separated by the objects are not neighbor to each other
             non_neighboor_cells.append(current_cells)
@@ -171,52 +185,47 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
                 # connective_parts and current_cells contain more than one
                 # cell info which are separated by the object ,so we are iterating
                 # with the for loop to reach all the cells
-                cells_boundaries.setdefault(cell_index,[])
-                cells_boundaries[cell_index].append(connective_parts[i])
-    
-    # Create adjacency (neighborhood matrix) for the cells based on
-    # cell number
+                cell_boundaries.setdefault(cell_index,[])
+                cell_boundaries[cell_index].append(connective_parts[i])
+     
     # Cell 1 is the left most cell and cell n is the right most cell
     # where n is the total cell number
-    n = len(cells_boundaries.keys())
-    all_cell_numbers = cells_boundaries.keys()
-
+    all_cell_numbers = cell_boundaries.keys()
     non_neighboor_cells = remove_duplicates(non_neighboor_cells)
    
-    #non_neighboor_cells = list(dict.fromkeys(non_neighboor_cells))
-    print(non_neighboor_cells)
-
+    """
     # Debug
-    #print("Keys: ",cells_boundaries.keys())
-    #key1 = list(cells_boundaries.keys())[0]
-    #print("Key1: ", key1)
-    #print("Key2 value: ", cells_boundaries.get(key1))
-    #
-    #key2 = list(cells_boundaries.keys())[1]
-    #print("Key2: ", key2)
-    #print("Key2 value: ", cells_boundaries.get(key2))
-    #
-    #key3 = list(cells_boundaries.keys())[2]
-    #print("Key3: ", key3)
-    #print("Key3 value: ", cells_boundaries.get(key3))
-    #
-    #key4 = list(cells_boundaries.keys())[3]
-    #print("Key4: ", key4)
-    #print("Key4 value: ", cells_boundaries.get(key4))
-    #
-    #key5 = list(cells_boundaries.keys())[4]
-    #print("Key5: ", key5)
-    #print("Key5 value: ", cells_boundaries.get(key5))
-    #
-    #key6 = list(cells_boundaries.keys())[5]
-    #print("Key6: ", key6)
-    #print("Key6 value: ", cells_boundaries.get(key6))
-    #
-    #key7 = list(cells_boundaries.keys())[6]
-    #print("Key7: ", key7)
-    #print("Key7 value: ", cells_boundaries.get(key7))
-
-    return separate_img, current_cell
+    print("Keys: ",cell_boundaries.keys())
+    key1 = list(cell_boundaries.keys())[0]
+    print("Key1: ", key1)
+    print("Key2 value: ", cell_boundaries.get(key1))
+    
+    key2 = list(cell_boundaries.keys())[1]
+    print("Key2: ", key2)
+    print("Key2 value: ", cell_boundaries.get(key2))
+    
+    key3 = list(cell_boundaries.keys())[2]
+    print("Key3: ", key3)
+    print("Key3 value: ", cell_boundaries.get(key3))
+    
+    key4 = list(cell_boundaries.keys())[3]
+    print("Key4: ", key4)
+    print("Key4 value: ", cell_boundaries.get(key4))
+    
+    key5 = list(cell_boundaries.keys())[4]
+    print("Key5: ", key5)
+    print("Key5 value: ", cell_boundaries.get(key5))
+    
+    key6 = list(cell_boundaries.keys())[5]
+    print("Key6: ", key6)
+    print("Key6 value: ", cell_boundaries.get(key6))
+    
+    key7 = list(cell_boundaries.keys())[6]
+    print("Key7: ", key7)
+    print("Key7 value: ", cell_boundaries.get(key7))
+    """
+    
+    return separate_img, current_cell, all_cell_numbers, cell_boundaries, non_neighboor_cells
 
 
 def display_separate_map(separate_map, cells):
@@ -226,6 +235,25 @@ def display_separate_map(separate_map, cells):
         display_img[separate_map == cell_id, :] = random_colors[cell_id, :]
     fig_new = plt.figure()
     plt.imshow(display_img)
+
+def calculate_neighboor_matrix(cells,boundaries,nonneighboor_cells):
+    """
+        This function creates adjacency matrix for the decomposed cell
+        Output: Matrix composed of zeros and ones
+                output.shape --> total_cell_number x total_cell_number
+        Assumption: One cell is not neighboor with itself, so diagonal elements
+                    are always zero!        
+        Example: let's say we have 3 cells: cell1 and cell2 are only neighboors
+                adjacency_matrix = [ [0 1 0] #cell1 is neighboor with cell2 
+                                     [1 0 0] #cell2 is neighboor with cell1
+                                     [0 0 0]  ]
+    """
+    total_cell_number = len(cells)
+    #print("Debug")
+    #print("Total cell number: ", total_cell_number)
+    #print("Cells: ", cells)
+    #print("Boundaries: ", boundaries)
+    #print("Non-neighboor cells: ", nonneighboor_cells)
 
 
 if __name__ == '__main__':
@@ -247,12 +275,11 @@ if __name__ == '__main__':
         _,binary_map = cv2.threshold(single_channel_map,127,1,cv2.THRESH_BINARY)
 
     # Call The Boustrophedon Cellular Decomposition function
-    bcd_out_im, bcd_out_cells = bcd(binary_map)
-    print('Total cells: {}'.format(bcd_out_cells))
+    bcd_out_im, bcd_out_cells, cell_numbers, cell_boundaries, non_neighboor_cell_numbers = bcd(binary_map)
     # Show the decomposed cells on top of original map
     display_separate_map(bcd_out_im, bcd_out_cells)
 
-
+    calculate_neighboor_matrix(cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
 
     # Just for convenience
     plt.show(block=False)
