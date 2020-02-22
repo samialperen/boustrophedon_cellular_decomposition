@@ -3,7 +3,9 @@ import sys
 sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 
 import bcd  #The Boustrophedon Cellular decomposition
-import dfs  #THe Depth-first Search Algorithm
+import dfs  #The Depth-first Search Algorithm
+import move_boustrophedon # Uses output of bcd cells in order to move the robot
+
 import cv2
 from matplotlib import pyplot as plt
 import timeit
@@ -13,7 +15,7 @@ if __name__ == '__main__':
     # Read the original data
     original_map = cv2.imread("../data/example2.png")
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
-
+    
     # Show the original data
     fig1 = plt.figure()
     plt.imshow(original_map)
@@ -30,10 +32,10 @@ if __name__ == '__main__':
     bcd_out_im, bcd_out_cells, cell_numbers, cell_boundaries, non_neighboor_cell_numbers = bcd.bcd(binary_map)
     # Show the decomposed cells on top of original map
     bcd.display_separate_map(bcd_out_im, bcd_out_cells)
-    print("Total cell number: ", len(cell_numbers))
-    print("Cells: ", cell_numbers)
-    print("Non-neighboor cells: ", non_neighboor_cell_numbers)
-    
+    #print("Total cell number: ", len(cell_numbers))
+    #print("Cells: ", cell_numbers)
+    #print("Non-neighboor cells: ", non_neighboor_cell_numbers)
+    #print("Cell boundaries: ", cell_boundaries)
 
     # Calculate optimum path using the depth first search
     # In the future, this graph should be calculated automatically using bcd outputs
@@ -61,12 +63,22 @@ if __name__ == '__main__':
     print("Cleaned cells in order ", cleaned)
     print("Execution time of dfs in seconds: ", exec_time_dfs)
 
+    # Check the output of the DFS --> All cells should be visited!
+    if (len(cell_numbers) != len(cleaned)):
+        print("DFS couldn't find a path to visit all cells!")
+        print("Total cell number: ", len(cell_numbers))
+        print("Visited total cell number: ", len(cleaned))
+        #break # TODO: Write something to raise error!
+
+    move_boustrophedon.track_paths(original_map,cleaned,cell_boundaries,non_neighboor_cell_numbers)
+
+
     # BFS
 
 
     # Add cost using distance between center of mass of cells
 
-    
+
 
     # Doesn't work --> Look at later, right now assume we have the graph 
     #calculate_neighboor_matrix(cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
