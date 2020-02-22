@@ -6,6 +6,7 @@ import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #THe Depth-first Search Algorithm
 import cv2
 from matplotlib import pyplot as plt
+import timeit
 
 if __name__ == '__main__':
     
@@ -51,11 +52,22 @@ if __name__ == '__main__':
         12: [10,13],
         13: [11,12]
     }
+
+    # DFS
     cleaned = [] #Keeps cleaned cell numbers
+    iter_number = 1000
+    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned, graph, 1)', 'from __main__ import dfs, cleaned, graph',number = iter_number)
+    exec_time_dfs = exec_time_dfs/iter_number
+    print("Cleaned cells in order ", cleaned)
+    print("Execution time of dfs in seconds: ", exec_time_dfs)
+
+    # BFS
+
+
+    # Add cost using distance between center of mass of cells
+
     
-    dfs.dfs(cleaned, graph, 1)
-    
-    print("Cleaned cell order ", cleaned)
+
     # Doesn't work --> Look at later, right now assume we have the graph 
     #calculate_neighboor_matrix(cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
 
