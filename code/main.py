@@ -13,7 +13,7 @@ import timeit
 if __name__ == '__main__':
     
     # Read the original data
-    original_map = cv2.imread("../data/example2.png")
+    original_map = cv2.imread("../data/main_example3.png")
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
     
     # Show the original data
@@ -32,6 +32,8 @@ if __name__ == '__main__':
     bcd_out_im, bcd_out_cells, cell_numbers, cell_boundaries, non_neighboor_cell_numbers = bcd.bcd(binary_map)
     # Show the decomposed cells on top of original map
     bcd.display_separate_map(bcd_out_im, bcd_out_cells)
+    plt.show(block=False)
+
     #print("Total cell number: ", len(cell_numbers))
     #print("Cells: ", cell_numbers)
     #print("Non-neighboor cells: ", non_neighboor_cell_numbers)
@@ -84,7 +86,6 @@ if __name__ == '__main__':
     #calculate_neighboor_matrix(cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
 
     # Just for convenience
-    plt.show(block=False)
     plt.waitforbuttonpress(1)
     input("Please press any key to close all figures.")
     plt.close("all")

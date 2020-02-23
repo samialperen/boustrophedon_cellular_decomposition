@@ -1,3 +1,39 @@
+from matplotlib import pyplot as plt
+
+def display_tracked_paths(input_im, x_coordinates,y_coordinates, cell_order):
+
+    # Assumption: Robot will start moving from left most point of each cell
+    # Cell order keeps the cell numbers in order, i.e. visit cell_order[0] first
+    fig_paths = plt.figure()
+    plt.show(block=False)
+    plt.ion()
+    input("Press Enter to Start the Movement of the Robot")
+    for i in range(len(cell_order)):
+        cell = cell_order[i]
+        # Robot will move vertical then move forward to next column 
+        for j in range(len(x_coordinates[cell])): 
+            y_start = y_coordinates[cell][0][0][0]
+            y_end = y_coordinates[cell][0][0][1]
+            for k in range(y_start,y_end):
+                #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
+                input_im[k,j] = [255,0,0]  
+                plt.imshow(input_im)
+                plt.draw()
+                plt.pause(0.0001)
+        print("Following cell is completed: ", cell)
+
+
+    #for i in range(len(x_coordinates)):
+    #    for j in range(len(y_coordinates)): 
+    #        display_img[input_im == i, input_im == j] = [0,0,255] #Red color
+    #        plt.imshow(display_img)
+    #for i in range(300):    
+    #    display_img[input_im == 10,i] = [0,0,255] #Red color
+    #    plt.imshow(display_img)
+    #for i in range(15):
+    #    display_img[30+i,15]= [0,0,255]
+    #    plt.plot(display_img)
+
 def track_paths(original_im,cells_to_visit,cell_boundaries,nonneighbors):
     """
         Input: original_im --> Input map image without any preprocessing
@@ -52,6 +88,7 @@ def track_paths(original_im,cells_to_visit,cell_boundaries,nonneighbors):
         cell_idx = cell_idx + 1
         # end of x calculation while loop
     
+    display_tracked_paths(original_im,cells_x_coordinates,cell_boundaries,cells_to_visit)
     
     ## Debug
     #print("##############DEBUG##########")
