@@ -80,6 +80,17 @@ if __name__ == '__main__':
 
     # Add cost using distance between center of mass of cells
 
+    x_number = 23
+    y_number = 37
+    x_number_end = x_number - (x_number%5)
+    for i in range(0,x_number_end+5,5):
+        print(i)
+
+
+
+
+
+
 
 
     # Doesn't work --> Look at later, right now assume we have the graph 
