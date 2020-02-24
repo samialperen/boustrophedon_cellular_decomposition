@@ -5,6 +5,11 @@ def display_tracked_paths(input_im, x_coordinates,y_coordinates, cell_order):
     c = cell_order[4]
     print("cell: ",c)
     print("Y coordinates: ",y_coordinates[c])
+    print("Y coordinates: ",y_coordinates[c][0])
+    print("Y coordinates: ",y_coordinates[c][1])
+    print("Length of y: ", len(y_coordinates[c]))
+
+
 
     # Assumption: Robot will start moving from left most point of each cell
     # Cell order keeps the cell numbers in order, i.e. visit cell_order[0] first
@@ -15,48 +20,54 @@ def display_tracked_paths(input_im, x_coordinates,y_coordinates, cell_order):
     ax = plt.gca() 
     img_artist = ax.imshow(input_im)
     input("Press Enter to Start the Movement of the Robot")
-    for i in range(len(cell_order)):
+    for i in range(len(cell_order)): #iterate through each cell in order
         cell = cell_order[i]
         cell_color = [randint(0,255+1),randint(0,255+1),randint(0,255+1)]
         # Robot will move vertical then move forward to next column 
         x_start = x_coordinates[cell][0] #Starting point x
         x_end = x_coordinates[cell][-1]  #Ending point x
         robot_size = 5 #square in pixels
+        current_y_length = len(y_coordinates[cell])
         # I will assume no need to modulate the starting point
         x_end_modulated = x_end - (x_end % robot_size) 
-        for j in range(x_start,x_end_modulated+robot_size,robot_size): 
+        for j in range(x_start,x_end_modulated+robot_size,robot_size): #iteration of x coordinates
             # This if else structure is to fix the problem about implementation
             # y_coordinates[cell][0] is sometimes list sometimes tuple depending on the cell
             # If else is a straightforward solution for this --> This is not cheating at all! :D  
-            if type(y_coordinates[cell][0]) is list:
-                # Take the average of within robot size range since all the objects are not rectangular
-                # for example y might be [(1,210),(1,211),(1,211),(1,212)]
-                # Therefore, y_start will be (1+1)/2=1 and y_end will be (210+212)/2=211
-                y_start = y_coordinates[cell][0][0][0]
-                y_end = y_coordinates[cell][0][0][1]
-            else:
-                y_start = y_coordinates[cell][0][0]
-                y_end = y_coordinates[cell][0][1]
-            # TO DO: modulate y_start as well!
-            y_end_modulated = y_end - (y_end % robot_size)
-            for k in range(y_start,y_end_modulated,robot_size):
-                #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
-                input_im[k:k+robot_size,j:j+robot_size] = cell_color  
-                img_artist.set_data(input_im)
-                plt.draw()
-                plt.pause(0.00000000001)
-        if ((x_end % robot_size) != 0) or ((y_end % robot_size) != 0):
-            print("Last part is fixed!")
-            input_im[x_end_modulated+robot_size:x_end,y_end_modulated+robot_size:y_end] = [255,0,0]
-            img_artist.set_data(input_im)
+            for y_ind in range(0,current_y_length,robot_size): #current_y_length-robot_size for other y_start/end
+                if type(y_coordinates[cell][0]) is list:
+                    # Take the average of within robot size range since all the objects are not rectangular
+                    # for example y might be [(1,210),(1,211),(1,211),(1,212)]
+                    # Therefore, y_start will be (1+1)/2=1 and y_end will be (210+212)/2=211
+                    y_start = y_coordinates[cell][y_ind][0][0]
+                    y_end = y_coordinates[cell][y_ind][0][1]
+                    #y_start = (y_coordinates[cell][y_ind][0][0]+y_coordinates[cell][y_ind+robot_size][0][0])//2
+                    #y_end = (y_coordinates[cell][y_ind][0][1]+y_coordinates[cell][y_ind+robot_size][0][1])//2
+                else:
+                    y_start = y_coordinates[cell][y_ind][0]
+                    y_end = y_coordinates[cell][y_ind][1]
+                    #y_start = (y_coordinates[cell][y_ind][0]+y_coordinates[cell][y_ind+robot_size][0])//2
+                    #y_end = (y_coordinates[cell][y_ind][1]+y_coordinates[cell][y_ind+robot_size][1])//2
+                # TO DO: modulate y_start as well!
+                print("y_start: ",y_start)
+                print("y_end: ", y_end)
+                y_end_modulated = y_end - (y_end % robot_size)
+                for k in range(y_start,y_end_modulated,robot_size): #iteration of y coordinates
+                    #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
+                    input_im[k:k+robot_size,j:j+robot_size] = cell_color  
+                    img_artist.set_data(input_im)
+                    plt.draw()
+                    plt.pause(0.00000000001)
+            # I am not sure indent of the below part and probably it needs to be changed
+            #if ((x_end % robot_size) != 0) or ((y_end % robot_size) != 0):
+            #    print("Last part is fixed!")
+            #    input_im[x_end_modulated+robot_size:x_end,y_end_modulated+robot_size:y_end] = [255,0,0]
+            #    img_artist.set_data(input_im)
 
         
         print("Following cell is completed: ", cell)
     
-        #y_start = (y_coordinates[cell][0][j][0]+y_coordinates[cell][0][j+robot_size][0])/2
-        #y_end = (y_coordinates[cell][0][j][1]+y_coordinates[cell][1][j+robot_size][0])/2
-        #y_start = (y_coordinates[cell][j][0]+y_coordinates[cell][j+robot_size][0])/2
-        #y_end = (y_coordinates[cell][j][1]+y_coordinates[cell][j+robot_size][1])/2
+      
     
     #print("X coordinates: ", x_coordinates[1])
 
