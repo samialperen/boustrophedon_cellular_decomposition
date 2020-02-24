@@ -63,13 +63,22 @@ def display_tracked_paths(input_im, x_coordinates,y_coordinates, cell_order):
             print("y_start: ",y_start)
             print("y_end: ", y_end)
             y_end_modulated = y_end - (y_end % robot_size)
-            for k in range(y_start,y_end_modulated,robot_size): #iteration of y coordinates
-                #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
-                print("x coordinate: ", j)
-                input_im[k:k+robot_size,j:j+robot_size] = cell_color  
-                img_artist.set_data(input_im)
-                plt.draw()
-                plt.pause(0.00000000001)
+            if (j%2) == 0: #move down
+                for k in range(y_start,y_end_modulated,robot_size): #iteration of y coordinates
+                    #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
+                    print("x coordinate: ", j)
+                    input_im[k:k+robot_size,j:j+robot_size] = cell_color  
+                    img_artist.set_data(input_im)
+                    plt.draw()
+                    plt.pause(0.00000000001)
+            else: #move up
+                for k in range(y_end_modulated-robot_size,y_start-robot_size,-robot_size): #iteration of y coordinates
+                    #input_in[y,x] --> It is weird, but related to opencv nothing to do! 
+                    print("x coordinate: ", j)
+                    input_im[k:k+robot_size,j:j+robot_size] = cell_color  
+                    img_artist.set_data(input_im)
+                    plt.draw()
+                    plt.pause(0.00000000001)
             ## I am not sure indent of the below part and probably it needs to be changed
             #if ((x_end % robot_size) != 0) or ((y_end % robot_size) != 0):
             #    print("Last part is fixed!")
