@@ -5,10 +5,11 @@ sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
 import move_boustrophedon # Uses output of bcd cells in order to move the robot
+import exceptions
 
 import cv2
-from matplotlib import pyplot as plt
 import timeit
+
 
 if __name__ == '__main__':
     
@@ -17,9 +18,9 @@ if __name__ == '__main__':
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
     
     # Show the original data
-    fig1 = plt.figure()
-    plt.imshow(original_map)
-    plt.title("Original Map Image")
+    fig1 = move_boustrophedon.plt.figure()
+    move_boustrophedon.plt.imshow(original_map)
+    move_boustrophedon.plt.title("Original Map Image")
     
     # We need binary image
     # 1's represents free space while 0's represents objects/walls
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     bcd_out_im, bcd_out_cells, cell_numbers, cell_boundaries, non_neighboor_cell_numbers = bcd.bcd(binary_map)
     # Show the decomposed cells on top of original map
     bcd.display_separate_map(bcd_out_im, bcd_out_cells)
-    plt.show(block=False)
+    move_boustrophedon.plt.show(block=False)
 
     #print("Total cell number: ", len(cell_numbers))
     #print("Cells: ", cell_numbers)
@@ -58,9 +59,11 @@ if __name__ == '__main__':
     }
 
     # DFS
-    cleaned = [] #Keeps cleaned cell numbers
+    cleaned = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
-    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned, graph, 1)', 'from __main__ import dfs, cleaned, graph',number = iter_number)
+    starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
+    print("Starting cell number: ", starting_cell_number)
+    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned, graph, starting_cell_number)', 'from __main__ import dfs, cleaned, graph, starting_cell_number',number = iter_number)
     exec_time_dfs = exec_time_dfs/iter_number
     print("Cleaned cells in order ", cleaned)
     print("Execution time of dfs in seconds: ", exec_time_dfs)
@@ -70,9 +73,14 @@ if __name__ == '__main__':
         print("DFS couldn't find a path to visit all cells!")
         print("Total cell number: ", len(cell_numbers))
         print("Visited total cell number: ", len(cleaned))
-        #break # TODO: Write something to raise error!
-
-    move_boustrophedon.track_paths(original_map,cleaned,cell_boundaries,non_neighboor_cell_numbers)
+        raise exceptions.DfsError("DFS couldn't find a path to visit all cells!")
+    
+    iter_number = 1000
+    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,cleaned,cell_boundaries,non_neighboor_cell_numbers)', \
+                                   'from __main__ import move_boustrophedon, \
+                                   cleaned, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+    path_time_dfs = path_time_dfs/iter_number
+    print("Total path tracking time of dfs in seconds: ", path_time_dfs)
 
 
     # BFS
@@ -80,11 +88,7 @@ if __name__ == '__main__':
 
     # Add cost using distance between center of mass of cells
 
-    x_number = 23
-    y_number = 37
-    x_number_end = x_number - (x_number%5)
-    for i in range(0,x_number_end+5,5):
-        print(i)
+ 
 
 
 
@@ -96,7 +100,10 @@ if __name__ == '__main__':
     # Doesn't work --> Look at later, right now assume we have the graph 
     #calculate_neighboor_matrix(cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
 
-    # Just for convenience
-    plt.waitforbuttonpress(1)
+
+
+
+    # Just for convenience, show each plot at the same time at different plots
+    move_boustrophedon.plt.waitforbuttonpress(1)
     input("Please press any key to close all figures.")
-    plt.close("all")
+    move_boustrophedon.plt.close("all")
