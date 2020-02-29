@@ -13,6 +13,7 @@ def display_tracked_paths(input_im, x_coordinates,y_coordinates, cell_order):
     input("Press Enter to Start the Movement of the Robot")
     for i in range(len(cell_order)): #iterate through each cell in order
         cell = cell_order[i]
+        print("Current cell: ", cell)
         cell_color = [randint(0,255+1),randint(0,255+1),randint(0,255+1)]
         # Robot will move vertical then move forward to next column 
         x_start = x_coordinates[cell][0] #Starting point x

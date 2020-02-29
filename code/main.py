@@ -4,6 +4,7 @@ sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
+import bfs  #The Breadth First Search Algorithm
 import move_boustrophedon # Uses output of bcd cells in order to move the robot
 import exceptions
 
@@ -58,35 +59,66 @@ if __name__ == '__main__':
         13: [11,12]
     }
 
-    # DFS
-    cleaned = [] #Keeps cleaned cell numbers in order
+    ############ DFS
+    cleaned_DFS = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
     starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
     print("Starting cell number: ", starting_cell_number)
-    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned, graph, starting_cell_number)', 'from __main__ import dfs, cleaned, graph, starting_cell_number',number = iter_number)
+    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned_DFS, graph, starting_cell_number)', \
+        'from __main__ import dfs, cleaned_DFS, graph, starting_cell_number',number = iter_number)
     exec_time_dfs = exec_time_dfs/iter_number
-    print("Cleaned cells in order ", cleaned)
+    print("DFS Cleaned cells in order", cleaned_DFS)
     print("Execution time of dfs in seconds: ", exec_time_dfs)
 
     # Check the output of the DFS --> All cells should be visited!
-    if (len(cell_numbers) != len(cleaned)):
-        print("DFS couldn't find a path to visit all cells!")
+    if (len(cell_numbers) != len(cleaned_DFS)):
         print("Total cell number: ", len(cell_numbers))
-        print("Visited total cell number: ", len(cleaned))
+        print("Visited total cell number: ", len(cleaned_DFS))
         raise exceptions.DfsError("DFS couldn't find a path to visit all cells!")
     
+
+
+    ######### BFS
+    cleaned_BFS = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
-    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,cleaned,cell_boundaries,non_neighboor_cell_numbers)', \
+    #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
+    print("Starting cell number: ", starting_cell_number)
+    exec_time_bfs = timeit.timeit('bfs.bfs(cleaned_BFS, graph, starting_cell_number)', \
+        'from __main__ import bfs, cleaned_BFS, graph, starting_cell_number',number = iter_number)
+    exec_time_bfs = exec_time_bfs/iter_number
+    print("BFS Cleaned cells in order", cleaned_BFS)
+    print("Execution time of bfs in seconds: ", exec_time_bfs)
+
+    # Check the output of the BFS --> All cells should be visited!
+    if (len(cell_numbers) != len(cleaned_BFS)):
+        print("Total cell number: ", len(cell_numbers))
+        print("Visited total cell number: ", len(cleaned_BFS))
+        raise exceptions.BfsError("BFS couldn't find a path to visit all cells!")
+    
+    ########## Add cost using distance between center of mass of cells
+
+    
+    
+    ########## Path Tracking
+    ### DFS
+    iter_number = 1
+    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,cleaned_DFS,cell_boundaries,non_neighboor_cell_numbers)', \
                                    'from __main__ import move_boustrophedon, \
-                                   cleaned, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+                                   cleaned_DFS, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
     path_time_dfs = path_time_dfs/iter_number
     print("Total path tracking time of dfs in seconds: ", path_time_dfs)
+    
+    ### BFS
+    iter_number = 1
+    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,cleaned_BFS,cell_boundaries,non_neighboor_cell_numbers)', \
+                                   'from __main__ import move_boustrophedon, \
+                                   cleaned_BFS, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+    path_time_bfs = path_time_bfs/iter_number
+    print("Total path tracking time of bfs in seconds: ", path_time_bfs)
 
 
-    # BFS
+    
 
-
-    # Add cost using distance between center of mass of cells
 
  
 

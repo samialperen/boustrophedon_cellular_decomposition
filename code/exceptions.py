@@ -6,4 +6,9 @@ class Error(Exception):
 
 class DfsError(Error):
     """Exception raised for errors in the output of Dfs algorithm."""
-    print("DFS couldn't find a path to visit all cells!")
+    # Do nothing
+
+class BfsError(Error):
+    """Exception raised for errors in the output of Bfs algorithm."""
+    # Do nothing 
+
