@@ -1,6 +1,6 @@
 # Fix OpenCv2 configuration error with ROS
-import sys
-sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
+#import sys
+#sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     optim_problem = distance_optim.distance_optim(mean_x_coordinates,mean_y_coordinates)
     genetic_output = distance_optim.genetic_algorithm(optim_problem,200,0.2,10)
     print("Genetic output:", genetic_output)
-    
+    print("Type of genetic output:", type(genetic_output))
     
     ########## Path Tracking
     ### DFS

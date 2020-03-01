@@ -7,8 +7,8 @@ def distance(x_coordinates,y_coordinates,cell1,cell2):
                                             they are dictionaries
     Output: distance between city1 and city2
     """
-    cell1 += cell1 # Real cell numbers start from 1, but mlrose requires zero indices
-    cell2 += cell2 # x_coordinates,y_coordinates have real cell numbers, i.e. starts from one
+    cell1 += 1 # Real cell numbers start from 1, but mlrose requires zero indices
+    cell2 += 1 # x_coordinates,y_coordinates have real cell numbers, i.e. starts from one
     a = np.array([x_coordinates[cell1],y_coordinates[cell1]])
     b = np.array([x_coordinates[cell2],y_coordinates[cell2]])
     return np.linalg.norm(a-b)
