@@ -96,7 +96,72 @@ if __name__ == '__main__':
         raise exceptions.BfsError("BFS couldn't find a path to visit all cells!")
     
     ########## Add cost using distance between center of mass of cells
+    # Small function to calculate mean --> no need to use numpy or statistics module
+    def mean(input_list):
+        output_mean = sum(input_list)/len(input_list)
+        return output_mean
 
+    def mean_double_list(input_double_list):
+        length = len(input_double_list)
+        total = 0 
+        for i in range(length):
+            #print("input_double_list[i]:", input_double_list[i][0])
+            total += mean(input_double_list[i])
+        
+        output_mean = total/length
+        return output_mean
+
+    def mean_d_double_list(input_double_list):
+        length = len(input_double_list)
+        total = 0 
+        for i in range(length):
+            #print("input_double_list[i]:", input_double_list[i][0])
+            total += mean(input_double_list[i][0])
+        
+        output_mean = total/length
+        return output_mean
+    
+    x_length = original_map.shape[1]
+    y_length = original_map.shape[0]
+
+    x_coordinates = move_boustrophedon.calculate_x_coordinates(x_length, y_length, \
+                    cell_numbers,cell_boundaries,non_neighboor_cell_numbers)
+    y_coordinates = cell_boundaries
+
+    mean_x_coordinates = {}
+    mean_y_coordinates = {}
+    for i in range(len(x_coordinates)):
+        cell_idx = i+1 #i starts from zero, but cell numbers start from 1
+        mean_x_coordinates[cell_idx] = mean(x_coordinates[cell_idx])
+        if type(y_coordinates[cell_idx][0]) is list:
+            mean_y_coordinates[cell_idx] = mean_d_double_list(y_coordinates[cell_idx])
+        else:
+            mean_y_coordinates[cell_idx] = mean_double_list(y_coordinates[cell_idx])
+    
+    #print("####DEBUG####")
+    #print("y_coordinates:", y_coordinates[5])
+    #print("Length: ", len(y_coordinates[5]))
+    #print("mean: ", mean_double_list(y_coordinates[5]))
+    #print("X coordinates:", x_coordinates)
+    #print("X coordinates mean:", mean_x_coordinates)
+    print("X coordinates mean: ",mean_x_coordinates)
+    print("Y coordinates mean: ",mean_y_coordinates)
+
+        
+    #if type(y_coordinates[cell][0]) is list:
+    #            # Take the average of within robot size range since all the objects are not rectangular
+    #            # for example y might be [(1,210),(1,211),(1,211),(1,212)]
+    #            # Therefore, y_start will be (1+1)/2=1 and y_end will be (210+212)/2=211
+    #            #print("y coordinates:: ",y_coordinates[cell][y_ind])
+    #            y_start = y_coordinates[cell][y_ind][0][0]
+    #            y_end = y_coordinates[cell][y_ind][0][1]
+    #            #y_start = (y_coordinates[cell][y_ind][0][0]+y_coordinates[cell][y_ind+robot_size][0][0])//2
+    #            #y_end = (y_coordinates[cell][y_ind][0][1]+y_coordinates[cell][y_ind+robot_size][0][1])//2
+    #        else:
+    
+    
+    
+    
     
     
     ########## Path Tracking
