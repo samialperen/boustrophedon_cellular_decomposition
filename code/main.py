@@ -5,17 +5,18 @@ sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
 import bfs  #The Breadth First Search Algorithm
+import distance_optim #Distance based optimization of TSP --> genetic, hill climbing etc.
+
 import move_boustrophedon # Uses output of bcd cells in order to move the robot
 import exceptions
 
-import cv2
 import timeit
 
 
 if __name__ == '__main__':
     
     # Read the original data
-    original_map = cv2.imread("../data/main_example3.png")
+    original_map = bcd.cv2.imread("../data/main_example3.png")
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
     
     # Show the original data
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     if len(original_map.shape) > 2:
         print("Map image is converted to binary")
         single_channel_map = original_map[:, :, 0]
-        _,binary_map = cv2.threshold(single_channel_map,127,1,cv2.THRESH_BINARY)
+        _,binary_map = bcd.cv2.threshold(single_channel_map,127,1,bcd.cv2.THRESH_BINARY)
 
     # Call The Boustrophedon Cellular Decomposition function
     bcd_out_im, bcd_out_cells, cell_numbers, cell_boundaries, non_neighboor_cell_numbers = bcd.bcd(binary_map)
@@ -144,24 +145,14 @@ if __name__ == '__main__':
     #print("mean: ", mean_double_list(y_coordinates[5]))
     #print("X coordinates:", x_coordinates)
     #print("X coordinates mean:", mean_x_coordinates)
-    print("X coordinates mean: ",mean_x_coordinates)
-    print("Y coordinates mean: ",mean_y_coordinates)
+    #print("X coordinates mean: ",mean_x_coordinates)
+    #print("Y coordinates mean: ",mean_y_coordinates)
 
         
-    #if type(y_coordinates[cell][0]) is list:
-    #            # Take the average of within robot size range since all the objects are not rectangular
-    #            # for example y might be [(1,210),(1,211),(1,211),(1,212)]
-    #            # Therefore, y_start will be (1+1)/2=1 and y_end will be (210+212)/2=211
-    #            #print("y coordinates:: ",y_coordinates[cell][y_ind])
-    #            y_start = y_coordinates[cell][y_ind][0][0]
-    #            y_end = y_coordinates[cell][y_ind][0][1]
-    #            #y_start = (y_coordinates[cell][y_ind][0][0]+y_coordinates[cell][y_ind+robot_size][0][0])//2
-    #            #y_end = (y_coordinates[cell][y_ind][0][1]+y_coordinates[cell][y_ind+robot_size][0][1])//2
-    #        else:
-    
-    
-    
-    
+   
+    optim_problem = distance_optim.distance_optim(mean_x_coordinates,mean_y_coordinates)
+    genetic_output = distance_optim.genetic_algorithm(optim_problem,200,0.2,10)
+    print("Genetic output:", genetic_output)
     
     
     ########## Path Tracking
