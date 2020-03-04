@@ -45,4 +45,52 @@ def genetic_algorithm(problem,pop_size,mutation_prob,max_attemp):
     """
     optimized_cells, _ = mlrose.genetic_alg(problem, mutation_prob = mutation_prob,\
                                         max_attempts = max_attemp, random_state = 2)
+    
+    # Add 1 to all cells since in our case, cell numbers start from one not zero!
+    optimized_cells += 1
+
+    return list(optimized_cells)
+
+
+def hill_climbing(problem,starting_cell):
+    """
+    Hill climbing implementation to minimize TSP
+    Inputs: 
+            problem --> optimization problem object required by mlrose
+            starting_cell --> starting cell number, index starting from 1
+    Outputs: 
+            optimized_cells --> cells to visit
+    """
+    # mlrose requires indices start from zero
+    # mlrose also requires init_state to be a 1D np array
+    #init_cell = np.array([starting_cell-1])
+    #init_cell = np.array([0,2,3,4,5,6,7,8,9,10,11,12,1])
+    
+    optimized_cells, _ = mlrose.hill_climb(problem)
+    
+    # Add 1 to all cells since in our case, cell numbers start from one not zero!
+    #optimized_cells += 1
+    
     return optimized_cells
+    
+
+def simulated_annealing(problem,starting_cell):
+    # mlrose requires indices start from zero
+    # mlrose also requires init_state to be a 1D np array
+    #init_cell = np.array([starting_cell-1])
+    
+    optimized_cells, _ = mlrose.simulated_annealing(problem)
+    
+    # Add 1 to all cells since in our case, cell numbers start from one not zero!
+    optimized_cells += 1
+    
+    return list(optimized_cells)
+
+def mimic(problem):
+    
+    optimized_cells, _ = mlrose.mimic(problem)
+    
+    # Add 1 to all cells since in our case, cell numbers start from one not zero!
+    optimized_cells += 1
+    
+    return list(optimized_cells)

@@ -1,6 +1,6 @@
 # Fix OpenCv2 configuration error with ROS
-#import sys
-#sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
+import sys
+sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
@@ -148,12 +148,53 @@ if __name__ == '__main__':
     #print("X coordinates mean: ",mean_x_coordinates)
     #print("Y coordinates mean: ",mean_y_coordinates)
 
-        
-   
+
+    # Create a common optimization problem for the mlrose library
     optim_problem = distance_optim.distance_optim(mean_x_coordinates,mean_y_coordinates)
-    genetic_output = distance_optim.genetic_algorithm(optim_problem,200,0.2,10)
-    print("Genetic output:", genetic_output)
-    print("Type of genetic output:", type(genetic_output))
+
+    ####### Genetic algorithm
+    iter_number = 10
+    #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
+    print("Starting cell number (not used in ga): ", starting_cell_number)
+    exec_time_ga = timeit.timeit('distance_optim.genetic_algorithm(optim_problem,200,0.2,10)', \
+        'from __main__ import distance_optim, optim_problem', number = iter_number)
+    exec_time_ga = exec_time_ga/iter_number
+    print("Execution time of genetic algorithm in seconds: ", exec_time_ga)
+    cleaned_genetic = distance_optim.genetic_algorithm(optim_problem,200,0.2,10)
+    print("Genetic output:", cleaned_genetic)
+
+    ####### Hill climbing
+    iter_number = 10
+    print("Starting cell number: ", starting_cell_number)
+    exec_time_hc = timeit.timeit('distance_optim.hill_climbing(optim_problem,starting_cell_number)', \
+        'from __main__ import distance_optim, optim_problem, starting_cell_number', number = iter_number)
+    exec_time_hc = exec_time_hc/iter_number
+    print("Execution time of hill climbing in seconds: ", exec_time_hc)
+    cleaned_hc = distance_optim.hill_climbing(optim_problem,starting_cell_number)
+    print("Hill climbing output:", cleaned_hc)
+
+    ####### Simulated Annealing
+    iter_number = 10
+    print("Starting cell number: ", starting_cell_number)
+    exec_time_sa = timeit.timeit('distance_optim.simulated_annealing(optim_problem,starting_cell_number)', \
+        'from __main__ import distance_optim, optim_problem, starting_cell_number', number = iter_number)
+    exec_time_sa = exec_time_sa/iter_number
+    print("Execution time of simulated annealing in seconds: ", exec_time_sa)
+    cleaned_sa = distance_optim.simulated_annealing(optim_problem,starting_cell_number)
+    print("Simulated annealing output:", cleaned_sa)
+
+    ####### MIMIC
+    iter_number = 10
+    print("Starting cell number: ", starting_cell_number)
+    exec_time_mimic = timeit.timeit('distance_optim.mimic(optim_problem)', \
+        'from __main__ import distance_optim, optim_problem', number = iter_number)
+    exec_time_mimic = exec_time_mimic/iter_number
+    print("Execution time of mimic in seconds: ", exec_time_mimic)
+    cleaned_mimic = distance_optim.mimic(optim_problem)
+    print("MIMIC output:", cleaned_mimic)
+    
+
+
     
     ########## Path Tracking
     ### DFS
