@@ -186,38 +186,6 @@ def bcd(erode_img: np.ndarray) -> Tuple[np.ndarray, int]:
     # where n is the total cell number
     all_cell_numbers = cell_boundaries.keys()
     non_neighboor_cells = remove_duplicates(non_neighboor_cells)
-   
-    """
-    # Debug
-    print("Keys: ",cell_boundaries.keys())
-    key1 = list(cell_boundaries.keys())[0]
-    print("Key1: ", key1)
-    print("Key2 value: ", cell_boundaries.get(key1))
-    
-    key2 = list(cell_boundaries.keys())[1]
-    print("Key2: ", key2)
-    print("Key2 value: ", cell_boundaries.get(key2))
-    
-    key3 = list(cell_boundaries.keys())[2]
-    print("Key3: ", key3)
-    print("Key3 value: ", cell_boundaries.get(key3))
-    
-    key4 = list(cell_boundaries.keys())[3]
-    print("Key4: ", key4)
-    print("Key4 value: ", cell_boundaries.get(key4))
-    
-    key5 = list(cell_boundaries.keys())[4]
-    print("Key5: ", key5)
-    print("Key5 value: ", cell_boundaries.get(key5))
-    
-    key6 = list(cell_boundaries.keys())[5]
-    print("Key6: ", key6)
-    print("Key6 value: ", cell_boundaries.get(key6))
-    
-    key7 = list(cell_boundaries.keys())[6]
-    print("Key7: ", key7)
-    print("Key7 value: ", cell_boundaries.get(key7))
-    """
     
     return separate_img, current_cell, list(all_cell_numbers), cell_boundaries, non_neighboor_cells
 
