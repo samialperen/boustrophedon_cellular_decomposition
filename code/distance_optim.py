@@ -72,6 +72,27 @@ def hill_climbing(problem,starting_cell):
     #optimized_cells += 1
     
     return optimized_cells
+
+def random_hill_climb(problem,starting_cell):
+    """
+    Random Hill climbing implementation to minimize TSP
+    Inputs: 
+            problem --> optimization problem object required by mlrose
+            starting_cell --> starting cell number, index starting from 1
+    Outputs: 
+            optimized_cells --> cells to visit
+    """
+    # mlrose requires indices start from zero
+    # mlrose also requires init_state to be a 1D np array
+    #init_cell = np.array([starting_cell-1])
+    #init_cell = np.array([0,2,3,4,5,6,7,8,9,10,11,12,1])
+    
+    optimized_cells, _ = mlrose.random_hill_climb(problem)
+    
+    # Add 1 to all cells since in our case, cell numbers start from one not zero!
+    #optimized_cells += 1
+    
+    return optimized_cells
     
 
 def simulated_annealing(problem,starting_cell):

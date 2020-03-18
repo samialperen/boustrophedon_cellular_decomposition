@@ -1,0 +1,39 @@
+Starting cell number:  3
+DFS Cleaned cells in order [3, 1, 2, 4, 5, 7, 6, 8, 10, 9, 11, 13, 12]
+Execution time of dfs in seconds:  1.2474297545850278e-07
+Starting cell number:  3
+BFS Cleaned cells in order [3, 1, 4, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+Execution time of bfs in seconds:  2.9590283520519734e-07
+Starting cell number (not used in ga):  3
+Execution time of genetic algorithm in seconds:  0.34132279418408873
+Genetic output: [5, 1, 11, 6, 4, 2, 10, 8, 12, 3, 7, 13, 9]
+Starting cell number:  3
+Execution time of hill climbing in seconds:  0.004113932698965072
+Hill climbing output: None
+Starting cell number:  3
+/home/saakgun/Projects/boustrophedon_cellular_decomposition/.venv/lib/python3.5/site-packages/mlrose/algorithms.py:310: RuntimeWarning: invalid value encountered in double_scalars
+  delta_e = next_fitness - problem.get_fitness()
+Execution time of simulated annealing in seconds:  0.001007028785534203
+Simulated annealing output: [7, 10, 3, 8, 2, 6, 4, 11, 13, 9, 12, 1, 5]
+Starting cell number:  3
+Execution time of mimic in seconds:  2.3405914925038815
+MIMIC output: [4, 8, 11, 1, 6, 5, 10, 2, 3, 13, 12, 9, 7]
+
+
+
+DFS Cleaned cells in order [5, 4, 2, 1, 3, 6, 7, 8, 10, 9, 11, 13, 12]
+Execution time of dfs in seconds:  1.0657520033419133e-07
+Starting cell number:  5
+BFS Cleaned cells in order [5, 4, 7, 2, 3, 6, 8, 9, 1, 10, 11, 12, 13]
+Execution time of bfs in seconds:  2.421780955046415e-07
+Starting cell number (not used in ga):  5
+Execution time of genetic algorithm in seconds:  0.3557590821059421
+Genetic output: [5, 1, 11, 6, 4, 2, 10, 8, 12, 3, 7, 13, 9]
+
+
+Total path tracking time of dfs in seconds:  626.1296889251098
+Total path tracking time of bfs in seconds:  679.8831956561189
+Total path tracking time of ga in seconds:  725.7637033849023
+Total path tracking time of sa in seconds:  455.98983178683557
+Total path tracking time of mimic in seconds:  489.74928567186
+
