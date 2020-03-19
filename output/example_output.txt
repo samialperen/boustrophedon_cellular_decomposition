@@ -63,3 +63,39 @@ Execution time of mimic in seconds:  5.412915337597951
 MIMIC output: [6, 22, 2, 17, 8, 9, 14, 24, 12, 25, 16, 11, 13, 23, 5, 19, 7, 10, 3, 1, 21, 4, 15, 18, 20]
 
 
+Total path tracking time of dfs in seconds:  463.80284321005456
+Total path tracking time of bfs in seconds:  457.44231549696997
+Total path tracking time of ga in seconds:  459.5470920361113
+Total path tracking time of sa in seconds:  458.30566079891287
+Total path tracking time of mimic in seconds:  469.12583873490803
+
+
+##### SMall map with less objects
+Starting cell number:  5
+DFS Cleaned cells in order [5, 4, 2, 1, 3, 6, 7]
+Execution time of dfs in seconds:  8.780485950410367e-08
+Starting cell number:  5
+BFS Cleaned cells in order [5, 4, 7, 2, 3, 6, 1]
+Execution time of bfs in seconds:  2.9729492962360384e-07
+Starting cell number (not used in ga):  15
+Execution time of genetic algorithm in seconds:  0.23870504209771753
+Genetic output: [5, 2, 4, 3, 7, 6, 1]
+Starting cell number:  15
+Execution time of hill climbing in seconds:  0.00044333459809422495
+Hill climbing output: None
+Starting cell number:  15
+Execution time of simulated annealing in seconds:  0.0005846634041517973
+Simulated annealing output: [2, 1, 5, 6, 4, 7, 3]
+Starting cell number:  15
+Execution time of mimic in seconds:  0.9090649277204648
+MIMIC output: [5, 1, 4, 7, 6, 2, 3]
+
+
+Total path tracking time of dfs in seconds:  127.43800295307301
+Total path tracking time of bfs in seconds:  126.1978704109788
+Total path tracking time of ga in seconds:  124.35730369994417
+Total path tracking time of sa in seconds:  133.57689337898046
+Total path tracking time of mimic in seconds:  138.14181704097427
+
+
+

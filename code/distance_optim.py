@@ -16,17 +16,21 @@ def distance(x_coordinates,y_coordinates,cell1,cell2):
 def distance_optim(x_coordinates,y_coordinates):
     # Create the distance list for cell pairs
     # Unfortunately, cell indices starts from zero for mlrose
-    dist_list = [(0, 1, distance(x_coordinates,y_coordinates,0,1)), (0, 2, distance(x_coordinates,y_coordinates,0,2)),\
+    #dist_list = [(0, 1, distance(x_coordinates,y_coordinates,0,1)), (0, 2, distance(x_coordinates,y_coordinates,0,2)),\
+    #             (1, 3, distance(x_coordinates,y_coordinates,1,3)), (2, 3, distance(x_coordinates,y_coordinates,2,3)),\
+    #             (3, 4, distance(x_coordinates,y_coordinates,3,4)), (3, 5, distance(x_coordinates,y_coordinates,3,5)),\
+    #             (4, 6, distance(x_coordinates,y_coordinates,4,6)), (5, 6, distance(x_coordinates,y_coordinates,5,6)),\
+    #             (6, 7, distance(x_coordinates,y_coordinates,6,7)), (6, 8, distance(x_coordinates,y_coordinates,6,8)),\
+    #             (7, 9, distance(x_coordinates,y_coordinates,7,9)), (8, 9, distance(x_coordinates,y_coordinates,8,9)),\
+    #             (9, 10, distance(x_coordinates,y_coordinates,9,10)), (9, 11, distance(x_coordinates,y_coordinates,9,11)),\
+    #             (10, 12, distance(x_coordinates,y_coordinates,10,12)), (11, 12, distance(x_coordinates,y_coordinates,11,12))]
+
+    dist_list3 = [(0, 1, distance(x_coordinates,y_coordinates,0,1)), (0, 2, distance(x_coordinates,y_coordinates,0,2)),\
                  (1, 3, distance(x_coordinates,y_coordinates,1,3)), (2, 3, distance(x_coordinates,y_coordinates,2,3)),\
-                 (3, 4, distance(x_coordinates,y_coordinates,3,4)), (3, 5, distance(x_coordinates,y_coordinates,3,5)),\
-                 (4, 6, distance(x_coordinates,y_coordinates,4,6)), (5, 6, distance(x_coordinates,y_coordinates,5,6)),\
-                 (6, 7, distance(x_coordinates,y_coordinates,6,7)), (6, 8, distance(x_coordinates,y_coordinates,6,8)),\
-                 (7, 9, distance(x_coordinates,y_coordinates,7,9)), (8, 9, distance(x_coordinates,y_coordinates,8,9)),\
-                 (9, 10, distance(x_coordinates,y_coordinates,9,10)), (9, 11, distance(x_coordinates,y_coordinates,9,11)),\
-                 (10, 12, distance(x_coordinates,y_coordinates,10,12)), (11, 12, distance(x_coordinates,y_coordinates,11,12))]
+                 (3, 4, distance(x_coordinates,y_coordinates,3,4)), (3, 5, distance(x_coordinates,y_coordinates,3,5))]
 
     # Define a fitness function object
-    fitness_dists = mlrose.TravellingSales(distances = dist_list)
+    fitness_dists = mlrose.TravellingSales(distances = dist_list3)
     # Define a optimization problem object
     problem_fit = mlrose.TSPOpt(length = len(y_coordinates), fitness_fn = fitness_dists, maximize=False)
     return problem_fit

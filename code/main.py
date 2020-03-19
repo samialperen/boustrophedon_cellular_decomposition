@@ -16,7 +16,7 @@ import timeit
 if __name__ == '__main__':
     
     # Read the original data
-    original_map = bcd.cv2.imread("../data/real_ex2.png")
+    original_map = bcd.cv2.imread("../data/real_ex3.png")
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
     
     # Show the original data
@@ -37,7 +37,6 @@ if __name__ == '__main__':
     bcd.display_separate_map(bcd_out_im, bcd_out_cells)
     move_boustrophedon.plt.show(block=False)
 
-    #cell_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14,15,16,17,18,19,20,21,22,23,24]
 
     #print("Total cell number: ", len(cell_numbers))
     #print("Cells: ", cell_numbers)
@@ -90,14 +89,24 @@ if __name__ == '__main__':
         25: [23,24]
     }
 
-    ########### DFS
+    graph3 = { #graph3  is for real_ex3.png
+        1: [2,3],
+        2: [1,4],
+        3: [1,4],
+        4: [2,3,5,6],
+        5: [4,7],
+        6: [4,7],
+        7: [5,6]
+    }
+
+    ########## DFS
     cleaned_DFS = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
     #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
-    starting_cell_number = 15
+    starting_cell_number = 5
     print("Starting cell number: ", starting_cell_number)
-    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned_DFS, graph2, starting_cell_number)', \
-        'from __main__ import dfs, cleaned_DFS, graph2, starting_cell_number',number = iter_number)
+    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned_DFS, graph3, starting_cell_number)', \
+        'from __main__ import dfs, cleaned_DFS, graph3, starting_cell_number',number = iter_number)
     exec_time_dfs = exec_time_dfs/iter_number
     print("DFS Cleaned cells in order", cleaned_DFS)
     print("Execution time of dfs in seconds: ", exec_time_dfs)
@@ -115,8 +124,8 @@ if __name__ == '__main__':
     iter_number = 1000
     #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
     print("Starting cell number: ", starting_cell_number)
-    exec_time_bfs = timeit.timeit('bfs.bfs(cleaned_BFS, graph2, starting_cell_number)', \
-        'from __main__ import bfs, cleaned_BFS, graph2, starting_cell_number',number = iter_number)
+    exec_time_bfs = timeit.timeit('bfs.bfs(cleaned_BFS, graph3, starting_cell_number)', \
+        'from __main__ import bfs, cleaned_BFS, graph3, starting_cell_number',number = iter_number)
     exec_time_bfs = exec_time_bfs/iter_number
     print("BFS Cleaned cells in order", cleaned_BFS)
     print("Execution time of bfs in seconds: ", exec_time_bfs)
@@ -127,7 +136,7 @@ if __name__ == '__main__':
     #    print("Visited total cell number: ", len(cleaned_BFS))
     #    raise exceptions.BfsError("BFS couldn't find a path to visit all cells!")
     
-    ########### Add cost using distance between center of mass of cells
+    ############ Add cost using distance between center of mass of cells
     # Small function to calculate mean --> no need to use numpy or statistics module
     def mean(input_list):
         output_mean = sum(input_list)/len(input_list)
@@ -170,10 +179,10 @@ if __name__ == '__main__':
     
     
 
-    # Create a common optimization problem for the mlrose library
+    ## Create a common optimization problem for the mlrose library
     optim_problem = distance_optim.distance_optim(mean_x_coordinates,mean_y_coordinates)
 
-    ####### Genetic algorithm
+    ###### Genetic algorithm
     iter_number = 10
     starting_cell_number = 15
     print("Starting cell number (not used in ga): ", starting_cell_number)
@@ -218,37 +227,37 @@ if __name__ == '__main__':
     
     ########## Path Tracking
     # DFS
-    iter_number = 1
-    dfs_path = [15, 13, 11, 10, 8, 7, 5, 4, 2, 1, 3, 6, 9, 12, 14, 16, 18, 19, 17, 20, 22, 21, 23, 25, 24]
-    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,dfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
-                                   'from __main__ import move_boustrophedon, \
-                                   dfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
-    path_time_dfs = path_time_dfs/iter_number
-    print("Total path tracking time of dfs in seconds: ", path_time_dfs)
+    #iter_number = 1
+    #dfs_path = [5, 4, 2, 1, 3, 6, 7]
+    #path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,dfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
+    #                               'from __main__ import move_boustrophedon, \
+    #                               dfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+    #path_time_dfs = path_time_dfs/iter_number
+    #print("Total path tracking time of dfs in seconds: ", path_time_dfs)
     
 
     ### BFS
     #iter_number = 1
-    #bfs_path = [5, 4, 7, 2, 3, 6, 8, 9, 1, 10, 11, 12, 13]
+    #bfs_path = [5, 4, 7, 2, 3, 6, 1]
     #path_time_bfs = timeit.timeit('move_boustrophedon.track_paths(original_map,bfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               bfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
     #path_time_bfs = path_time_bfs/iter_number
     #print("Total path tracking time of bfs in seconds: ", path_time_bfs)
 
-    ### Genetic algorithm
+    ## Genetic algorithm
     #iter_number = 1
-    #ga_path = [5, 1, 11, 6, 4, 2, 10, 8, 12, 3, 7, 13, 9]
+    #ga_path = [5, 2, 4, 3, 7, 6, 1]
     #path_time_ga = timeit.timeit('move_boustrophedon.track_paths(original_map,ga_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               ga_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
     #path_time_ga = path_time_ga/iter_number
     #print("Total path tracking time of ga in seconds: ", path_time_ga)
-    #
+    
 
-    ## Simulated Annealing
+    # Simulated Annealing
     #iter_number = 1
-    #sa_path = [5, 7, 10, 3, 8, 2, 6, 4, 11, 13, 9, 12, 1]
+    #sa_path = [5, 6, 4, 7, 3, 2, 1]
     #path_time_sa = timeit.timeit('move_boustrophedon.track_paths(original_map,sa_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               sa_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
@@ -257,13 +266,13 @@ if __name__ == '__main__':
     
     
     ## MIMIC
-    #iter_number = 1
-    #mimic_path = [5, 10, 2, 3, 13, 12, 9, 7, 4, 8, 11, 1, 6]
-    #path_time_mimic = timeit.timeit('move_boustrophedon.track_paths(original_map,mimic_path,cell_boundaries,non_neighboor_cell_numbers)', \
-    #                               'from __main__ import move_boustrophedon, \
-    #                               mimic_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
-    #path_time_mimic = path_time_mimic/iter_number
-    #print("Total path tracking time of mimic in seconds: ", path_time_mimic)
+    iter_number = 1
+    mimic_path = [5, 1, 4, 7, 6, 2, 3]
+    path_time_mimic = timeit.timeit('move_boustrophedon.track_paths(original_map,mimic_path,cell_boundaries,non_neighboor_cell_numbers)', \
+                                   'from __main__ import move_boustrophedon, \
+                                   mimic_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+    path_time_mimic = path_time_mimic/iter_number
+    print("Total path tracking time of mimic in seconds: ", path_time_mimic)
 
  
 
