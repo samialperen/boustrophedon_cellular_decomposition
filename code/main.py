@@ -65,31 +65,32 @@ if __name__ == '__main__':
     graph2 = { #graph2  is for real_ex2.png
         1: [2,3],
         2: [1,4],
-        3: [1,4,5],
-        4: [2,3,6],
-        5: [3,6],
-        6: [4,5,7,8],
-        7: [6,9],
-        8: [6,9],
-        9: [7,8,10,11],
-        10: [9,12],
-        11: [9,12],
-        12: [10,11,13,14],
-        13: [12,15],
-        14: [12,15],
-        15: [13,14,16,17],
-        16: [15,19],
-        17: [15,18],
-        18: [17,19],
-        19: [16,21],
-        20: [17,21],
-        21: [19,20,22,23],
-        22: [21,24],
-        23: [21,24],
-        24: [22,23]
+        3: [1,4],
+        4: [2,3,5,6],
+        5: [4,7],
+        6: [4,7],
+        7: [5,6,8,9],
+        8: [7,10],
+        9: [7,10],
+        10: [8,9,11,12],
+        11: [10,13],
+        12: [10,13],
+        13: [11,12,14,15],
+        14: [13,16],
+        15: [13,16],
+        16: [14,15,18,19],
+        17: [16,19],
+        18: [16,19],
+        19: [17,18,20,21],
+        20: [19,22],
+        21: [19,22],
+        22: [20,21,23,24],
+        23: [22,25],
+        24: [22,25],
+        25: [23,24]
     }
 
-    ########## DFS
+    ########### DFS
     cleaned_DFS = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
     #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     #    print("Visited total cell number: ", len(cleaned_BFS))
     #    raise exceptions.BfsError("BFS couldn't find a path to visit all cells!")
     
-    ########## Add cost using distance between center of mass of cells
+    ########### Add cost using distance between center of mass of cells
     # Small function to calculate mean --> no need to use numpy or statistics module
     def mean(input_list):
         output_mean = sum(input_list)/len(input_list)
@@ -174,7 +175,7 @@ if __name__ == '__main__':
 
     ####### Genetic algorithm
     iter_number = 10
-    #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
+    starting_cell_number = 15
     print("Starting cell number (not used in ga): ", starting_cell_number)
     exec_time_ga = timeit.timeit('distance_optim.genetic_algorithm(optim_problem,200,0.2,10)', \
         'from __main__ import distance_optim, optim_problem', number = iter_number)
@@ -216,15 +217,16 @@ if __name__ == '__main__':
 
     
     ########## Path Tracking
-    ### DFS
-    #iter_number = 1
-    #dfs_path = [5, 4, 2, 1, 3, 6, 7, 8, 10, 9, 11, 13, 12]
-    #path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,dfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
-    #                               'from __main__ import move_boustrophedon, \
-    #                               dfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
-    #path_time_dfs = path_time_dfs/iter_number
-    #print("Total path tracking time of dfs in seconds: ", path_time_dfs)
+    # DFS
+    iter_number = 1
+    dfs_path = [15, 13, 11, 10, 8, 7, 5, 4, 2, 1, 3, 6, 9, 12, 14, 16, 18, 19, 17, 20, 22, 21, 23, 25, 24]
+    path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,dfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
+                                   'from __main__ import move_boustrophedon, \
+                                   dfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
+    path_time_dfs = path_time_dfs/iter_number
+    print("Total path tracking time of dfs in seconds: ", path_time_dfs)
     
+
     ### BFS
     #iter_number = 1
     #bfs_path = [5, 4, 7, 2, 3, 6, 8, 9, 1, 10, 11, 12, 13]
