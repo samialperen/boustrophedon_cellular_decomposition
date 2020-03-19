@@ -1,6 +1,6 @@
 # Fix OpenCv2 configuration error with ROS
-import sys
-sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
+#import sys
+#sys.path.remove("/opt/ros/kinetic/lib/python2.7/dist-packages")
 
 import bcd  #The Boustrophedon Cellular decomposition
 import dfs  #The Depth-first Search Algorithm
@@ -16,7 +16,7 @@ import timeit
 if __name__ == '__main__':
     
     # Read the original data
-    original_map = bcd.cv2.imread("../data/real_ex3.png")
+    original_map = bcd.cv2.imread("../data/real_ex4.png")
     #original_map = cv2.imread("../data/example2.png")[:,0:350]
     
     # Show the original data
@@ -99,14 +99,37 @@ if __name__ == '__main__':
         7: [5,6]
     }
 
+    graph4 = { #graph4  is for real_ex4.png
+        1: [2,3],
+        2: [1,4],
+        3: [1,4],
+        4: [2,3,5,6],
+        5: [4,7],
+        6: [4,7],
+        7: [5,6,8,9],
+        8: [7,10],
+        9: [7,10],
+        10: [8,9,11,12],
+        11: [10,13],
+        12: [10,13],
+        13: [11,12,14,15],
+        14: [13,16],
+        15: [13,16],
+        16: [14,15,17,18],
+        17: [16,19],
+        18: [16,19],
+        19: [17,18]
+    }
+
+
     ########## DFS
     cleaned_DFS = [] #Keeps cleaned cell numbers in order
     iter_number = 1000
     #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
-    starting_cell_number = 5
+    starting_cell_number = 10
     print("Starting cell number: ", starting_cell_number)
-    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned_DFS, graph3, starting_cell_number)', \
-        'from __main__ import dfs, cleaned_DFS, graph3, starting_cell_number',number = iter_number)
+    exec_time_dfs = timeit.timeit('dfs.dfs(cleaned_DFS, graph4, starting_cell_number)', \
+        'from __main__ import dfs, cleaned_DFS, graph4, starting_cell_number',number = iter_number)
     exec_time_dfs = exec_time_dfs/iter_number
     print("DFS Cleaned cells in order", cleaned_DFS)
     print("Execution time of dfs in seconds: ", exec_time_dfs)
@@ -124,8 +147,8 @@ if __name__ == '__main__':
     iter_number = 1000
     #starting_cell_number = move_boustrophedon.randint(1,len(cell_numbers))
     print("Starting cell number: ", starting_cell_number)
-    exec_time_bfs = timeit.timeit('bfs.bfs(cleaned_BFS, graph3, starting_cell_number)', \
-        'from __main__ import bfs, cleaned_BFS, graph3, starting_cell_number',number = iter_number)
+    exec_time_bfs = timeit.timeit('bfs.bfs(cleaned_BFS, graph4, starting_cell_number)', \
+        'from __main__ import bfs, cleaned_BFS, graph4, starting_cell_number',number = iter_number)
     exec_time_bfs = exec_time_bfs/iter_number
     print("BFS Cleaned cells in order", cleaned_BFS)
     print("Execution time of bfs in seconds: ", exec_time_bfs)
@@ -226,9 +249,9 @@ if __name__ == '__main__':
 
     
     ########## Path Tracking
-    # DFS
+    ## DFS
     #iter_number = 1
-    #dfs_path = [5, 4, 2, 1, 3, 6, 7]
+    #dfs_path = [10, 8, 7, 5, 4, 2, 1, 3, 6, 9, 11, 13, 12, 14, 16, 15, 17, 19, 18]
     #path_time_dfs = timeit.timeit('move_boustrophedon.track_paths(original_map,dfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               dfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
@@ -238,7 +261,7 @@ if __name__ == '__main__':
 
     ### BFS
     #iter_number = 1
-    #bfs_path = [5, 4, 7, 2, 3, 6, 1]
+    #bfs_path = [10, 8, 9, 11, 12, 7, 13, 5, 6, 14, 15, 4, 16, 2, 3, 17, 18, 1, 19]
     #path_time_bfs = timeit.timeit('move_boustrophedon.track_paths(original_map,bfs_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               bfs_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
@@ -247,7 +270,7 @@ if __name__ == '__main__':
 
     ## Genetic algorithm
     #iter_number = 1
-    #ga_path = [5, 2, 4, 3, 7, 6, 1]
+    #ga_path = [10, 5, 15, 1, 11, 6, 4, 2, 13, 8, 18, 17, 3, 12, 7, 19, 14, 16, 9]
     #path_time_ga = timeit.timeit('move_boustrophedon.track_paths(original_map,ga_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               ga_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
@@ -257,7 +280,7 @@ if __name__ == '__main__':
 
     # Simulated Annealing
     #iter_number = 1
-    #sa_path = [5, 6, 4, 7, 3, 2, 1]
+    #sa_path = [10, 3, 19, 17, 14, 8, 7,4, 15, 18, 9, 6, 13, 11, 16, 12, 2, 5, 1]
     #path_time_sa = timeit.timeit('move_boustrophedon.track_paths(original_map,sa_path,cell_boundaries,non_neighboor_cell_numbers)', \
     #                               'from __main__ import move_boustrophedon, \
     #                               sa_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
@@ -267,7 +290,7 @@ if __name__ == '__main__':
     
     ## MIMIC
     iter_number = 1
-    mimic_path = [5, 1, 4, 7, 6, 2, 3]
+    mimic_path = [10, 19, 11, 1, 4, 18, 8, 5,17, 3, 6, 2, 13, 14, 15, 9, 16, 12, 7]
     path_time_mimic = timeit.timeit('move_boustrophedon.track_paths(original_map,mimic_path,cell_boundaries,non_neighboor_cell_numbers)', \
                                    'from __main__ import move_boustrophedon, \
                                    mimic_path, original_map, cell_boundaries,non_neighboor_cell_numbers',number = iter_number)
