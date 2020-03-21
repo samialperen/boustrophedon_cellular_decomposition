@@ -46,7 +46,7 @@ f2.suptitle('Convergence Time for Large Map with High Number of Obstacles')
 
 
 axes2[0].bar(x_axis3, y_axis3, color='#7f6d5f', width=bar_width, edgecolor='white')
-axes2[0].set_xlabel('Different Optimization Methods')
+axes2[0].set_xlabel('Different OptiAmization Methods')
 axes2[0].set_ylabel('Convergence Time (micro seconds)')
 
 
@@ -99,6 +99,46 @@ axes4[0].set_ylabel('Convergence Time (micro seconds)')
 axes4[1].bar(x_axis8, y_axis8, color='#557f2d', width=bar_width, edgecolor='white')
 axes4[1].set_xlabel('Different Optimization Methods')
 axes4[1].set_ylabel('Convergence Time (seconds)')
+
+
+################################################################
+
+# Large map low number of objects
+xaxis1 = ["DFS","BFS","Genetic Alg.","Hill Climb.","Simulated Anneal.","MIMIC"]
+coverage_times1 = [476.129, 479.883, 510.237, 525.763, 425.989, 489.749 ]
+# Large map high number of objects
+xaxis2 = ["DFS","BFS","Genetic Alg.","Simulated Anneal.","MIMIC"]
+coverage_times2 = [663.802, 672.442, 591.547, 598.305, 507.125]
+# Small map low number of objects
+xaxis3 = ["DFS","BFS","Genetic Alg.","Hill Climb.","Simulated Anneal.","MIMIC"]
+coverage_times3 = [127.438, 126.197, 124.357, 131.483, 133.576, 138.142]
+# Small map high number of objects
+xaxis4 = ["DFS","BFS","Genetic Alg.","Hill Climb.","Simulated Anneal.","MIMIC"]
+coverage_times4 = [213.596, 269.609, 193.117, 191.323, 194.862, 193.583]
+
+f5 = plt.figure()
+plt.bar(xaxis1, coverage_times1, color='#557f2d', width=bar_width, edgecolor='white')
+plt.title("Total Coverage Time for Large Map with Low Number of Obstacles")
+plt.xlabel("Different Optimization Methods")
+plt.ylabel("Total Coverage Time (seconds)")
+
+f6 = plt.figure()
+plt.bar(xaxis2, coverage_times2, color='#557f2d', width=bar_width, edgecolor='white')
+plt.title("Total Coverage Time for Large Map with High Number of Obstacles")
+plt.xlabel("Different Optimization Methods")
+plt.ylabel("Total Coverage Time (seconds)")
+
+f7 = plt.figure()
+plt.bar(xaxis3, coverage_times3, color='#557f2d', width=bar_width, edgecolor='white')
+plt.title("Total Coverage Time for Small Map with Low Number of Obstacles")
+plt.xlabel("Different Optimization Methods")
+plt.ylabel("Total Coverage Time (seconds)")
+
+f8 = plt.figure()
+plt.bar(xaxis4, coverage_times4, color='#557f2d', width=bar_width, edgecolor='white')
+plt.title("Total Coverage Time for Small Map with High Number of Obstacles")
+plt.xlabel("Different Optimization Methods")
+plt.ylabel("Total Coverage Time (seconds)")
 
 
 
